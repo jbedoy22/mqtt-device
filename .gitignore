@@ -31,6 +31,6 @@
 *.out
 *.app
 
-.vscode
-.pio
-.Ds_Store
+*.pio
+*.vscode
+*.Ds_Store
