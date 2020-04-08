@@ -3,7 +3,12 @@
 #include <MQTT.h>
 #include <constants.h>
 #include <connect.h>
+#include <settings.h>
+#include <llp.h>
+#include <touch_sensor.h>
 
+DataPack input = DataPack();
+ThSensor sensor = ThSensor(0x76, 20, 500);
 
 WiFiClient net;
 MQTTClient client;
@@ -22,6 +27,8 @@ void setup() {
   client.begin(BROKER, net);
 
   connect(Serial, net, client);
+  pinMode(0, INPUT);
+  sensor.init(0);
 }
 
 void loop() {
@@ -42,4 +49,7 @@ void loop() {
     client.publish(String(MQTT_ID)+"/alarm", "Warning!");
     delay(500);
   }
+
+  DataPack out = sensor.run(input);
+  out.write(Serial);  
 }
